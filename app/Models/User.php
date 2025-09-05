@@ -18,6 +18,14 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    public function senderPosts() {
+        return $this->hasMany(Post::class, 'sender_id');
+    }
+
+    public function receiverPosts() {
+        return $this->hasMany(Post::class, 'receiver_id');
+    }
     protected $fillable = [
         'name',
         'email',

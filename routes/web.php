@@ -5,6 +5,10 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('posts', [App\Http\Controllers\Post::class, 'index']);
+Route::get('posts/{id}', [App\Http\Controllers\Post::class, 'show']);
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
