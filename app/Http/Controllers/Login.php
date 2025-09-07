@@ -14,10 +14,11 @@ class Login extends Controller
         return view('login');
     }
     function login(request $request) {
-        $user = $request->input('user');
+        $email = $request->input('user');
         $password = $request->input('password');
-        dd($user, $password);
+
         $user = \app\Models\User::where('email', $email)->first();
+        dd($user);
         if ($user == null) {
             // TODO send info / log that user with that email does not exist in db
             return false;
