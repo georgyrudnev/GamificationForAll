@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Controller
 {
@@ -11,11 +12,22 @@ class Post extends Controller
     {
         // fetch posts from db
         $posts = \App\Models\Post::all();
+        $userId = Auth::id();
+        $score = -1;
+        $points = -1;
+        if ($userId != null)
+        {
+            $user = \App\Models\User::find($userId);
+            $score = $user->score;
+            $points = $user->points;
+            //dd($user, $score, $points);
 
+        }
+        //dd($userId);
         //dd($posts); // to quickly show what was loaded
         //send posts to view
 
-        return view('posts/postsIndex', ['posts' => $posts]);
+        return view('posts/postsIndex', ['posts' => $posts, 'score' => $score, 'points' => $points]);
 
     }
 
