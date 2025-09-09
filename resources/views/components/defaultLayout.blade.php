@@ -6,24 +6,26 @@
         Bravour
     </title>
 </head>
-<header class="bg-pink-500 flex-row align-content items-center justify-center ">
-    <div>
-        Header start
+<header class="bg-white flex flex-row basis-128 h-26 text-center items-center p-6">
+    <div class="w-32">
+        <img src="{{ asset('img/bravourHorse.jpg') }}" alt="site logo">
     </div>
-    <div class="align-items"> What is the difference between header and head in html? Where do I put my cdn scripts?
-    </div>
-    <h1 class="bg-blue-500"> Bravour
+
+    <h1 class="w-96 text-5xl font-bold"> Bravour
     </h1>
-    <div>
+    <div class="w-64">
+        <img src="{{ asset("img/score.png")}}" alt="score symbol" class="h-20 w-16 ml-24">
         Score: @yield('Score')
-        Points: @yield('Points')
     </div>
     <div>
-        Header end
+        <img src="{{ asset("img/spendingPoints.png")}}" alt="score symbol" class="h-20 w-16 ml-6">
+        <div class="ml-6">
+            Points: @yield('Points')
+        </div>
     </div>
 </header>
 
-<body>
+<body class="bg-orange-600">
 
 {{$slot}}
 

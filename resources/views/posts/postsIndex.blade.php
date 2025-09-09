@@ -1,11 +1,12 @@
 <x-defaultLayout>
-// TODO Add link / route to individual posts
+
+    <div class="p-16"> // TODO Add link / route to individual posts
 
     //question to ask prof: What if I want to show data from my db in my upper header column which I previously defined
     // in a default layout?
-
-    //TODO check if this works also in default layout
+    </div>
     @if($points != -1)
+
         @section('Score', $score)
         @section('Points', $points)
     @endif
