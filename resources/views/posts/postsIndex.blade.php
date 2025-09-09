@@ -15,7 +15,8 @@
        <div class="bg-pink-600 flex justify-center">
 
         <ol>
-            <a href="" class="bg-yellow-700 mt-8 mb-8"> {{$post->title}} </a>
+            <li><a href="" class="bg-yellow-700 mt-8 mb-8"> {{$post->title}} </a>
+            </li>
         </ol>
 
        </div>
