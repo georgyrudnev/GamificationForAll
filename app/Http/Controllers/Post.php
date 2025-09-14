@@ -18,23 +18,18 @@ class Post extends Controller
         if ($userId != null)
         {
             $user = \App\Models\User::find($userId);
-            $score = $user->score;
-            $points = $user->points;
-            //dd($user, $score, $points);
-
         }
         //dd($userId);
         //dd($posts); // to quickly show what was loaded
         //send posts to view
 
-        return view('posts/postsIndex', ['posts' => $posts, 'score' => $score, 'points' => $points]);
+        return view('posts/postsIndex', ['posts' => $posts]);
 
     }
 
     function show($id) {
         // fetch posts from db
         $post = \App\Models\Post::find($id);
-
         //dd($posts[$id-1]); // to quickly show what was loaded
         //send posts to view
 

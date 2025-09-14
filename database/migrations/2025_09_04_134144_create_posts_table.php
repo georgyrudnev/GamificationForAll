@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->text('content')->nullable();
-            $table->string('sender_id');
-            $table->string('receiver_id');
+            $table->foreignId('sender_id');
+            $table->foreignId('receiver_id');
             $table->timestamps();
         });
     }
