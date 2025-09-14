@@ -17,4 +17,8 @@ class Post extends Model
     public function receiver() {
         return $this->belongsTo(User::class, 'receiver_id');
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class, 'post_id');
+    }
 }

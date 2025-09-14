@@ -26,6 +26,10 @@ class User extends Authenticatable
     public function receiverPosts() {
         return $this->hasMany(Post::class, 'receiver_id');
     }
+
+    public function comments() {
+        return $this->hasMany(Comment::class, 'post_id');
+    }
     protected $fillable = [
         'name',
         'email',
