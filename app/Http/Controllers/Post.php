@@ -35,4 +35,6 @@ class Post extends Controller
 
         return view('posts/postsShow', ['post' => $post]);
     }
+
+    // TODO Create "create", "edit" and delete function
 }
