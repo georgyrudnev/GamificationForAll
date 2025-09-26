@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/posts', [App\Http\Controllers\Post::class, 'index']);
 Route::get('posts/{id}', [App\Http\Controllers\Post::class, 'show']);
 // TODO Create post, put and delete routes
+Route::post('posts/{id}/submit-comment', [App\Http\Controllers\Post::class, 'createComment']);
 
 Route::get('login-custom', [App\Http\Controllers\Login::class, 'index']);
 Route::post('submit-login', [App\Http\Controllers\Login::class, 'login']);
