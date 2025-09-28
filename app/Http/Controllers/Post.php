@@ -46,14 +46,15 @@ class Post extends Controller
         }
 
         \App\Models\Comment::create(['content' => $content, 'post_id' => $id, 'author_id' => $authorId]);
+        return redirect()->route('posts.show', ['id' => $id]);
     }
     function updateComment(request $request, int $id) {
 
-        $content = $request->input("content");
-        dd($content);
-        if (strlen($content) < 3) {
-            return error("content is too short");
-        }
+        $content = $request->input("commentContent");
+        $request->validate([
+            'commentContent' => 'required|string|min:3'
 
+        ]);
+        return redirect()->route('posts.show', ['id' => $id]);
     }
 }
