@@ -65,6 +65,7 @@
                     Cancel
                 </button>
                 <form id="commentEdit_form" action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/edit-comment" method="post" class="mx-auto hidden">
+                    @method("PUT") <!-- Laravel requires specifying PUT/DELETE methods separately -->
                     @csrf <!-- Laravel requires a CSRF token for POST requests -->
 
                     <!-- textarea needed for larger texts -->
