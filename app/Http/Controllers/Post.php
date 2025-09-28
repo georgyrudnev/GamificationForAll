@@ -17,12 +17,14 @@ class Post extends Controller
         $points = -1;
         if ($userId != null) {
             $user = \App\Models\User::find($userId);
+            $score = $user->score;
+            $points = $user->points;
         }
         //dd($userId);
         //dd($posts); // to quickly show what was loaded
         //send posts to view
 
-        return view('posts/postsIndex', ['posts' => $posts]);
+        return view('posts/postsIndex', ['posts' => $posts, 'score' => $score, 'points' => $points]);
 
     }
 
@@ -39,7 +41,7 @@ class Post extends Controller
     // TODO Create "create", "edit" and delete function
     function createComment(request $request, int $id)
     {
-        // TODO: check if user logged in
+
 
         $content = $request->input("content");
         $authorId = 12;
@@ -48,5 +50,13 @@ class Post extends Controller
         }
 
         \App\Models\Comment::create(['content' => $content, 'post_id' => $id, 'author_id' => $authorId]);
+    }
+    function editComment(request $request, int $id) {
+
+        $content = $request->input("content");
+        if (strlen($content) < 3) {
+            return;
+        }
+
     }
 }

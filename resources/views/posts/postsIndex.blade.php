@@ -3,7 +3,7 @@
     <div class="p-16">
 
     </div>
-    @if($points != -1)
+    @if($points != null AND $score != null AND $points != -1)
 
         @section('Score', $score)
         @section('Points', $points)
