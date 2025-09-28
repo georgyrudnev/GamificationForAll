@@ -1,4 +1,13 @@
 <x-defaultLayout>
+
+    @if($user != null)
+
+        @section('Score', $user->score)
+        @section('Points', $user->points)
+    @else
+        @section('Score', "Log in to see your score & points")
+    @endif
+
 <div  class="ml-10 mt-8">
     <div class="text-2xl font-bold">
         {{$post->title}}
@@ -42,20 +51,59 @@
             </form>
         </div>
 
-        <div class="pb-5 border-2 border-black ml-2 pl-2 pt-1 mb-10 w-3/4">
+        <div class="pb-5 border-2 border-black ml-2 pl-2 pt-1 mb-10 w-11/12">
 
             @for($i = 0; $i < count($post->comments); $i++)
                <div class="font-bold">
                    {{$i+1}}. Author: {{$post->comments[$i]->author->name}}
                </div>
                 {{$post->comments[$i]->content}}
+                <button id= "editComment_btn" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
+                    Edit comment
+                </button>
+                <button id= "cancelComment_btn" class="btn bg-blue-950 uppercase ml-3 px-4 py-2 hidden" type="button">
+                    Cancel
+                </button>
+                <form id="commentEdit_form" action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/edit-comment" method="post" class="mx-auto hidden">
+                    @csrf <!-- Laravel requires a CSRF token for POST requests -->
 
+                    <!-- textarea needed for larger texts -->
+                    <label for="content" class="block p-5 text-xl font-medium">Edit Comment:</label>
+
+
+                    <div class="flex items-center">
+                        <!-- add old function in value to keep content if validation fails -->
+                        <textarea name="content" class="bg-blue-300 mt-2 ml-5 w-1/6" rows="4" >{{old("content")}}</textarea>
+
+                        <!-- TODO add validation in posts Model inside create method -->
+                        @error("content")
+                        {{$message}}
+                        @enderror
+                        <button class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="submit">
+                            Submit
+                        </button>
+                    </div>
+
+                </form>
             @endfor
         </div>
+        <script>
+            document.getElementById("editComment_btn").addEventListener("click",function(){
+                    document.getElementById("commentEdit_form").style.display = "block";
+                    document.getElementById("cancelComment_btn").style.display = "block";
+                    document.getElementById("editComment_btn").style.display = "none";
+                }
+            )
+            document.getElementById("cancelComment_btn").addEventListener("click",function(){
+                    document.getElementById("commentEdit_form").style.display = "none";
+                    document.getElementById("cancelComment_btn").style.display = "none";
+                    document.getElementById("editComment_btn").style.display = "block";
+                }
+            )
+        </script>
 
 
     </div>
 </div>
-
 
 </x-defaultLayout>

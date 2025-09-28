@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function Laravel\Prompts\error;
 
 class Post extends Controller
 {
@@ -13,18 +14,12 @@ class Post extends Controller
         // fetch posts from db
         $posts = \App\Models\Post::all();
         $userId = Auth::id();
-        $score = -1;
-        $points = -1;
-        if ($userId != null) {
-            $user = \App\Models\User::find($userId);
-            $score = $user->score;
-            $points = $user->points;
-        }
+        $user = \App\Models\User::find($userId);
         //dd($userId);
         //dd($posts); // to quickly show what was loaded
         //send posts to view
 
-        return view('posts/postsIndex', ['posts' => $posts, 'score' => $score, 'points' => $points]);
+        return view('posts/postsIndex', ['posts' => $posts, 'user' => $user]);
 
     }
 
@@ -32,10 +27,11 @@ class Post extends Controller
     {
         // fetch posts from db
         $post = \App\Models\Post::find($id);
-        //dd($posts[$id-1]); // to quickly show what was loaded
-        //send posts to view
+        // fetch logged-in user from db
+        $userId = Auth::id();
+        $user = \App\Models\User::find($userId);
 
-        return view('posts/postsShow', ['post' => $post]);
+        return view('posts/postsShow', ['post' => $post, 'user' => $user]);
     }
 
     // TODO Create "create", "edit" and delete function
@@ -51,11 +47,12 @@ class Post extends Controller
 
         \App\Models\Comment::create(['content' => $content, 'post_id' => $id, 'author_id' => $authorId]);
     }
-    function editComment(request $request, int $id) {
+    function updateComment(request $request, int $id) {
 
         $content = $request->input("content");
+        dd($content);
         if (strlen($content) < 3) {
-            return;
+            return error("content is too short");
         }
 
     }
