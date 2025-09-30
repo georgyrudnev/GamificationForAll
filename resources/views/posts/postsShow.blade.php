@@ -22,7 +22,7 @@
     </div>
 
     <div>
-        <div class="text-2xl font-bold pt-5 pb-5">
+        <div class="text-2xl font-bold mt-4 pt-2 pb-5 border-t w-11/12">
             Comments:
         </div>
 
@@ -51,20 +51,23 @@
             </form>
         </div>
 
-        <div class="pb-5 border-2 border-black ml-2 pl-2 pt-1 mb-10 w-11/12">
+        <!-- Comments area -->
+        <div class="pb-5 ml-2 pl-2 pt-1 mb-10 w-11/12">
 
+            <!-- individual comments area -->
             @for($i = 0; $i < count($post->comments); $i++)
-               <div class="font-bold">
+               <div class=" border-b border-amber-400 mb-2 pb-4 w-2/5">
+                <div class="font-bold">
                    {{$i+1}}. Author: {{$post->comments[$i]->author->name}}
                </div>
                 {{$post->comments[$i]->content}}
-                <button id= "editComment_btn" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
+                <button id= "editComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
                     Edit comment
                 </button>
-                <button id= "cancelComment_btn" class="btn bg-blue-950 uppercase ml-3 px-4 py-2 hidden" type="button">
+                <button id= "cancelComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2 hidden" type="button">
                     Cancel
                 </button>
-                <form id="commentEdit_form" action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/edit-comment" method="post" class="mx-auto hidden">
+                <form id="commentEdit_form{{$i}}" action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/edit-comment" method="post" class="mx-auto hidden">
                     @method("PUT") <!-- Laravel requires specifying PUT/DELETE methods separately -->
                     @csrf <!-- Laravel requires a CSRF token for POST requests -->
 
@@ -85,33 +88,36 @@
                     </div>
 
                 </form>
+               </div>
+                <script>
+                    commentEditTextarea = document.getElementById("commentEdit_textarea");
+                    hasOldInput = commentEditTextarea.value.trim() !== '';
+
+                    if (hasOldInput) {
+                        document.addEventListener('DOMContentLoaded', (event) => {
+                            document.getElementById("commentEdit_form{{$i}}").style.display = "block";
+                            document.getElementById("cancelComment_btn{{$i}}").style.display = "block";
+                            document.getElementById("editComment_btn{{$i}}").style.display = "none";
+                        })
+                    }
+
+                    document.getElementById("editComment_btn{{$i}}").addEventListener("click",function(){
+                            document.getElementById("commentEdit_form{{$i}}").style.display = "block";
+                            document.getElementById("cancelComment_btn{{$i}}").style.display = "block";
+                            document.getElementById("editComment_btn{{$i}}").style.display = "none";
+                        }
+                    )
+                    document.getElementById("cancelComment_btn{{$i}}").addEventListener("click",function(){
+                            document.getElementById("commentEdit_form{{$i}}").style.display = "none";
+                            document.getElementById("cancelComment_btn{{$i}}").style.display = "none";
+                            document.getElementById("editComment_btn{{$i}}").style.display = "block";
+                        }
+                    )
+                </script>
+
             @endfor
         </div>
-        <script>
-            const commentEditTextarea = document.getElementById("commentEdit_textarea");
-            const hasOldInput = commentEditTextarea.value.trim() !== '';
 
-            if (hasOldInput) {
-                document.addEventListener('DOMContentLoaded', (event) => {
-                    document.getElementById("commentEdit_form").style.display = "block";
-                    document.getElementById("cancelComment_btn").style.display = "block";
-                    document.getElementById("editComment_btn").style.display = "none";
-                })
-            }
-
-            document.getElementById("editComment_btn").addEventListener("click",function(){
-                    document.getElementById("commentEdit_form").style.display = "block";
-                    document.getElementById("cancelComment_btn").style.display = "block";
-                    document.getElementById("editComment_btn").style.display = "none";
-                }
-            )
-            document.getElementById("cancelComment_btn").addEventListener("click",function(){
-                    document.getElementById("commentEdit_form").style.display = "none";
-                    document.getElementById("cancelComment_btn").style.display = "none";
-                    document.getElementById("editComment_btn").style.display = "block";
-                }
-            )
-        </script>
 
 
     </div>

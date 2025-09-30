@@ -48,13 +48,15 @@ class Post extends Controller
         \App\Models\Comment::create(['content' => $content, 'post_id' => $id, 'author_id' => $authorId]);
         return redirect()->route('posts.show', ['id' => $id]);
     }
-    function updateComment(request $request, int $id) {
-
+    function updateComment(request $request, int $id, int $commentId) {
+        $comment = \App\Models\Comment::find($commentId);
         $content = $request->input("commentContent");
         $request->validate([
             'commentContent' => 'required|string|min:3'
 
         ]);
+
+        $comment->update(['content' => $content]);
         return redirect()->route('posts.show', ['id' => $id]);
     }
 }
