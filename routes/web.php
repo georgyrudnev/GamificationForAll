@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/posts', [App\Http\Controllers\Post::class, 'index'])->name('posts');
 Route::get('posts/{id}', [App\Http\Controllers\Post::class, 'show'])->name('posts.show');
-// TODO Create post, put and delete routes
+
+// Create, put and delete routes for comments
 Route::post('posts/{id}/submit-comment', [App\Http\Controllers\Post::class, 'createComment'])->name('posts.createComment');
 Route::put('posts/{id}/{commentId}/edit-comment', [App\Http\Controllers\Post::class, 'updateComment'])->name('posts.updateComment');
+Route::delete('posts/{id}/{commentId}/delete-comment', [App\Http\Controllers\Post::class, 'deleteComment'])->name('posts.deleteComment');
 
 Route::get('login-custom', [App\Http\Controllers\Login::class, 'index']);
 Route::post('submit-login', [App\Http\Controllers\Login::class, 'login']);
