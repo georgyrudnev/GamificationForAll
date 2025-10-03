@@ -115,8 +115,9 @@
                </div>
                 <script>
                     commentEditTextarea = document.getElementById("commentEdit_textarea");
-                    hasOldInput = commentEditTextarea.value.trim() !== '';
 
+                    // Needed so that textarea is not displayed anymore after new comment was created
+                    hasOldInput = commentEditTextarea.value.trim() !== '';
                     if (hasOldInput) {
                         document.addEventListener('DOMContentLoaded', (event) => {
 
