@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use http\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use function Laravel\Prompts\error;
@@ -54,9 +55,14 @@ class Post extends Controller
             $request->validate([
                 'commentContent' => 'required|string|min:3'
 
-        ]);
+            ]);
+            $comment->update(['content' => $content]);
 
-        $comment->update(['content' => $content]);
+            session()->flash("status", ["bg-green-700 p-4 text-green-100","Successfully added comment"]);
+        }
+        else {
+            session()->flash("status", ["bg-red-700 m-2 p-4 text-red-100", "There was a problem. Are you allowed to edit this comment?"]);
+        }
         return redirect()->route('posts.show', ['id' => $id]);
     }
 
@@ -64,8 +70,11 @@ class Post extends Controller
         $comment = \App\Models\Comment::find($commentId);
         if ($comment->canEditOrDelete(auth()->user())) {
             $commentId->delete();
+            session()->flash("status", ["bg-green-700 p-4 text-green-100","Comment successfully deleted"]);
         }
-
-        return redirect()->route('posts.show', ['id' => $id])->with("message", "Comment successfully deleted");
+        else {
+            session()->flash("status", ["bg-red-700 m-2 p-4 text-red-100", "There was a problem. Are you allowed to edit this comment?"]);
+        }
+        return redirect()->route('posts.show', ['id' => $id]);
     }
 }

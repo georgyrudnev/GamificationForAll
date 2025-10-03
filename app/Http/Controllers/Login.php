@@ -28,6 +28,7 @@ class Login extends Controller
             return redirect()->route('posts');//->with('success', "logged in successfully");
         }
 
-        return false; // TODO send info / log that user with that password wrong
+        abort(401); // check if correct error code
+        
     }
 }

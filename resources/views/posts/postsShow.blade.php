@@ -10,6 +10,12 @@
         @section('Points', "Log in to see your points")
     @endif
 
+    @if(session()->has("status"))
+        <div class={{session()->get("status")[0]}}>
+         {{session()->get("status")[1]}}
+        </div>
+    @endif
+
 <div  class="ml-10 mt-8">
     <div class="text-2xl font-bold">
         {{$post->title}}
@@ -64,28 +70,23 @@
                    {{$i+1}}. Author: {{$post->comments[$i]->author->name}}
                </div>
                 {{$post->comments[$i]->content}}
-
-                   <div name="visibleOnInitialLoadBTN" class="mt-4 grid grid-cols-7">
-                       <button id= "editComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
-                           Edit
-                       </button>
-                       <button id= "cancelComment_btn{{$i}}" class="btn bg-yellow-600 uppercase hidden px-4 py-2" type="button">
-                           <span>Cancel</span>
-                       </button>
-                       <form action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/delete-comment" method="post">
-                           @method('DELETE')
-                           @csrf
-                           <button class="btn bg-red-400 uppercase ml-1 px-4 py-2">DELETE</button>
-
-
-                       </form>
-<!--
-                       <button id="deleteComment_btn{{$i}}" class="btn bg-red-400 uppercase ml-1 px-4 py-2" type="button"">
-                           Delete
-                       </button>
--->
-
-                   </div>
+                    @auth
+                        @if($post->comments[$i]->canEditOrDelete(auth()->user()))
+                           <div name="visibleOnInitialLoadBTN" class="mt-4 grid grid-cols-7">
+                               <button id= "editComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
+                                   Edit
+                               </button>
+                               <button id= "cancelComment_btn{{$i}}" class="btn bg-yellow-600 uppercase hidden px-4 py-2" type="button">
+                                   <span>Cancel</span>
+                               </button>
+                               <form action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/delete-comment" method="post">
+                                   @method('DELETE')
+                                   @csrf
+                                   <button class="btn bg-red-400 uppercase ml-1 px-4 py-2">DELETE</button>
+                               </form>
+                           </div>
+                        @endif
+                   @endauth
 
 
                 <form id="commentEdit_form{{$i}}" action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/edit-comment" method="post" class="mx-auto hidden">
@@ -116,6 +117,7 @@
 
                     if (hasOldInput) {
                         document.addEventListener('DOMContentLoaded', (event) => {
+
                             document.getElementById("commentEdit_form{{$i}}").style.display = "block";
                             document.getElementById("cancelComment_btn{{$i}}").style.display = "block";
                             document.getElementById("editComment_btn{{$i}}").style.display = "none";
