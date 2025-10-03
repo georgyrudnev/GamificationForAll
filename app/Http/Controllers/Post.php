@@ -15,10 +15,8 @@ class Post extends Controller
         $posts = \App\Models\Post::all();
         $userId = Auth::id();
         $user = \App\Models\User::find($userId);
-        //dd($userId);
-        //dd($posts); // to quickly show what was loaded
-        //send posts to view
 
+        //send posts to view
         return view('posts/postsIndex', ['posts' => $posts, 'user' => $user]);
 
     }
@@ -38,9 +36,8 @@ class Post extends Controller
     function createComment(request $request, int $id)
     {
 
-
         $content = $request->input("content");
-        $authorId = 12;
+        $authorId = 12; // Anonymous author
         if (Auth::check()) {
             $authorId = Auth::id();
         }
@@ -58,5 +55,11 @@ class Post extends Controller
 
         $comment->update(['content' => $content]);
         return redirect()->route('posts.show', ['id' => $id]);
+    }
+
+    function deleteComment(request $request, int $id, int $commentId) {
+        // TODO add check for access rights
+        \App\Models\Comment::find($commentId)->delete();
+        return redirect()->route('posts.show', ['id' => $id])->with("message", "Comment successfully deleted");
     }
 }
