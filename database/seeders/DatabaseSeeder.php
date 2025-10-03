@@ -17,23 +17,19 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
-        User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('password')
         ]);
+
+        \App\Models\User::factory(10)->create();
+        \App\Models\Post::factory(10)->create();
+        \App\Models\Comment::factory(3)->create();
 
         User::factory()->create([
             'id' => '12',
             'name' => 'Anonymous',
             'email' => 'anonymous@example.com',
         ]);
-        \App\Models\User::factory(10)->create([]);
-        \App\Models\Post::factory(10)->create();
-        \App\Models\Comment::factory(3)->create();
     }
 }
