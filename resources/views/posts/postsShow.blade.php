@@ -1,6 +1,5 @@
 <x-defaultLayout>
 
-    <!-- TODO: Add component -->
     @if($user != null)
 
         @section('Score', $user->score)
@@ -47,7 +46,6 @@
                     <!-- add old function in value to keep content if validation fails -->
                     <textarea name="content" class="bg-orange-300 mt-2 ml-5 w-1/6" rows="4" >{{old("content")}}</textarea>
 
-                    <!-- TODO add validation in posts Model inside create method -->
                     @error("content")
                         {{$message}}
                     @enderror
@@ -70,24 +68,28 @@
                    {{$i+1}}. Author: {{$post->comments[$i]->author->name}}
                </div>
                 {{$post->comments[$i]->content}}
-                    @auth
-                        @if($post->comments[$i]->canEditOrDelete(auth()->user()))
                            <div name="visibleOnInitialLoadBTN" class="mt-4 grid grid-cols-7">
-                               <button id= "editComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
-                                   Edit
-                               </button>
+                               @auth
+                                   @if($post->comments[$i]->canEditOrDelete(auth()->user()))
+                                       <button id= "editComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
+                                           Edit
+                                       </button>
+                                   @endif
+                               @endauth
                                <button id= "cancelComment_btn{{$i}}" class="btn bg-yellow-600 uppercase hidden px-4 py-2" type="button">
                                    <span>Cancel</span>
                                </button>
+
                                <form action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/delete-comment" method="post">
                                    @method('DELETE')
                                    @csrf
-                                   <button class="btn bg-red-400 uppercase ml-1 px-4 py-2">DELETE</button>
+                                   @auth
+                                       @if($post->comments[$i]->canEditOrDelete(auth()->user()))
+                                           <button class="btn bg-red-400 uppercase ml-1 px-4 py-2">DELETE</button>
+                                       @endif
+                                   @endauth
                                </form>
                            </div>
-                        @endif
-                   @endauth
-
 
                 <form id="commentEdit_form{{$i}}" action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/edit-comment" method="post" class="mx-auto hidden">
                     @method("PUT") <!-- Laravel requires specifying PUT/DELETE methods separately -->
