@@ -30,6 +30,14 @@ class User extends Authenticatable
     public function comments() {
         return $this->hasMany(Comment::class, 'post_id');
     }
+
+    public function isAdmin(): bool
+    {
+        if($this->email === 'admin@admin.com') {
+            return true;
+        }
+        return false;
+    }
     protected $fillable = [
         'name',
         'email',
