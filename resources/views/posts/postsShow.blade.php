@@ -55,18 +55,37 @@
         <div class="pb-5 ml-2 pl-2 pt-1 mb-10 w-11/12">
 
             <!-- individual comments area -->
+
             @for($i = 0; $i < count($post->comments); $i++)
                <div class=" border-b border-amber-400 mb-2 pb-4 w-2/5">
                 <div class="font-bold">
                    {{$i+1}}. Author: {{$post->comments[$i]->author->name}}
                </div>
                 {{$post->comments[$i]->content}}
-                <button id= "editComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
-                    Edit comment
-                </button>
-                <button id= "cancelComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2 hidden" type="button">
-                    Cancel
-                </button>
+
+                   <div name="visibleOnInitialLoadBTN" class="mt-4 grid grid-cols-7">
+                       <button id= "editComment_btn{{$i}}" class="btn bg-blue-950 uppercase ml-3 px-4 py-2" type="button">
+                           Edit
+                       </button>
+                       <button id= "cancelComment_btn{{$i}}" class="btn bg-yellow-600 uppercase hidden px-4 py-2" type="button">
+                           <span>Cancel</span>
+                       </button>
+                       <form action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/delete-comment" method="post">
+                           @method('DELETE')
+                           @csrf
+                           <button class="btn bg-red-400 uppercase ml-1 px-4 py-2">DELETE</button>
+
+
+                       </form>
+<!--
+                       <button id="deleteComment_btn{{$i}}" class="btn bg-red-400 uppercase ml-1 px-4 py-2" type="button"">
+                           Delete
+                       </button>
+-->
+
+                   </div>
+
+
                 <form id="commentEdit_form{{$i}}" action="/posts/{{$post->id}}/{{$post->comments[$i]->id}}/edit-comment" method="post" class="mx-auto hidden">
                     @method("PUT") <!-- Laravel requires specifying PUT/DELETE methods separately -->
                     @csrf <!-- Laravel requires a CSRF token for POST requests -->
@@ -103,7 +122,7 @@
 
                     document.getElementById("editComment_btn{{$i}}").addEventListener("click",function(){
                             document.getElementById("commentEdit_form{{$i}}").style.display = "block";
-                            document.getElementById("cancelComment_btn{{$i}}").style.display = "block";
+                            document.getElementById("cancelComment_btn{{$i}}").style.display = "inline-block";
                             document.getElementById("editComment_btn{{$i}}").style.display = "none";
                         }
                     )
@@ -113,6 +132,7 @@
                             document.getElementById("editComment_btn{{$i}}").style.display = "block";
                         }
                     )
+
                 </script>
 
             @endfor
