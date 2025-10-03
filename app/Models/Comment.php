@@ -18,4 +18,16 @@ class Comment extends Model
     public function post() {
         return $this->belongsTo(Post::class, 'post_id');
     }
+
+    public function canEditOrDelete($user) {
+
+       if($user->isAdmin()) {
+           return true;
+       }
+
+       if ($this->author_id == $user->id) {
+           return true;
+       }
+       return false;
+    }
 }
