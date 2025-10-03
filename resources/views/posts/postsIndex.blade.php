@@ -3,12 +3,15 @@
     <div class="p-16">
 
     </div>
+
+    <!-- TODO: Add component -->
     @if($user != null)
 
         @section('Score', $user->score)
         @section('Points', $user->points)
     @else
-        @section('Score', "Log in to see your score & points")
+        @section('Score', "Log in to see your score")
+        @section('Points', "Log in to see your points")
     @endif
 
 
