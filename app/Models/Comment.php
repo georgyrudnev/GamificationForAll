@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use function PHPUnit\Framework\isNull;
 
 class Comment extends Model
 {
@@ -20,14 +21,15 @@ class Comment extends Model
     }
 
     public function canEditOrDelete($user) {
+        if (!isNull($user)) {
+            if ($user->isAdmin()) {
+                return true;
+            }
 
-       if($user->isAdmin()) {
-           return true;
-       }
-
-       if ($this->author_id == $user->id) {
-           return true;
-       }
+            if ($this->author_id == $user->id) {
+                return true;
+            }
+        }
        return false;
     }
 }
