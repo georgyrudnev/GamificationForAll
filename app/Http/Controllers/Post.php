@@ -47,9 +47,12 @@ class Post extends Controller
     }
     function updateComment(request $request, int $id, int $commentId) {
         $comment = \App\Models\Comment::find($commentId);
-        $content = $request->input("commentContent");
-        $request->validate([
-            'commentContent' => 'required|string|min:3'
+
+        // check access rights
+        if ($comment->canEditOrDelete(auth()->user())) {
+            $content = $request->input("commentContent");
+            $request->validate([
+                'commentContent' => 'required|string|min:3'
 
         ]);
 
@@ -58,8 +61,11 @@ class Post extends Controller
     }
 
     function deleteComment(request $request, int $id, int $commentId) {
-        // TODO add check for access rights
-        \App\Models\Comment::find($commentId)->delete();
+        $comment = \App\Models\Comment::find($commentId);
+        if ($comment->canEditOrDelete(auth()->user())) {
+            $commentId->delete();
+        }
+
         return redirect()->route('posts.show', ['id' => $id])->with("message", "Comment successfully deleted");
     }
 }
