@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use function PHPUnit\Framework\isNull;
 
 class Comment extends Model
 {
@@ -20,8 +19,8 @@ class Comment extends Model
         return $this->belongsTo(Post::class, 'post_id');
     }
 
-    public function canEditOrDelete($user) {
-        if (!isNull($user)) {
+    public function canEditOrDelete($user): bool {
+        if ($user) {
             if ($user->isAdmin()) {
                 return true;
             }
